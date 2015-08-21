@@ -23,7 +23,10 @@ export default class SforceEvaluator {
           return context.$conn[key](...args);
         };
       } else if (type === 'object') {
+        console.log('key=', key);
         Object.defineProperty(context, key, {
+          enumerable: true,
+          configurable: false,
           get: function() {
             if (!context.$conn) {
               throw new Error('Connection is not established yet. Type ".authorize" to connect to your instance.');

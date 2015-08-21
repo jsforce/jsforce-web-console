@@ -43,12 +43,15 @@ export default class CommandPrompt extends React.Component {
     const { data } = this.props;
     const { rows } = this.state;
     return (
-      <textarea ref='textarea' className='output-result'
-        onKeyDown={ this.onKeyDown.bind(this) }
-        onKeyUp={ this.onKeyUp.bind(this) }
-        style={ { width: '100%' } }
-        rows={ rows }
-        defaultValue={ data } />
+      <div className='command-prompt'>
+        <div className='prompt-mark'>&gt;</div>
+        <textarea ref='textarea'
+          onKeyDown={ this.onKeyDown.bind(this) }
+          onKeyUp={ this.onKeyUp.bind(this) }
+          style={ { width: '100%' } }
+          rows={ rows }
+          defaultValue={ data } />
+      </div>
     );
   }
 }

@@ -56,7 +56,7 @@ export default class ContextEvaluator {
       .map((key) => ({
         label: key,
         value: key,
-        type: typeName(ctx[key]),
+        type: typeName(ctx[key]) || 'Object',
       }));
     let completion = candidates.length === 0 ? '' :
       candidates.map((c) => c.value).reduce((completion, candidate) => {

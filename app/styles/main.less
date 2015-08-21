@@ -1,12 +1,85 @@
 @import (inline) "../../node_modules/react-object-inspector/react-object-inspector.css";
 
-.input-result, .output-result, .output-log {
-  margin: 4px 0;
-  padding: 4px 8px;
+#root {
+  padding: 60px 0;
 }
-.output-log {
-  white-space: pre;
-}
-.output-error {
-  color: red;
+
+.repl {
+  padding: 4px;
+
+  .input-command, .output-result, .output-log {
+    margin: 4px 0;
+    padding: 4px 8px;
+  }
+  .input-command, .command-prompt {
+    font-family: monospace;
+  }
+  .output-result {
+    .sequence-number {
+      float: right;
+      color: #999;
+      &:before {
+        content: "#";
+      }
+    }
+  }
+  .output-log {
+    white-space: pre;
+    &.output-info {
+      color: #37f;
+    }
+    &.output-error {
+      color: red;
+    }
+  }
+
+  .spinner {
+    display: block;
+    padding: 4px 8px;
+    font-style: italic;
+    color: #666;
+  }
+
+  .command-prompt {
+    display: table;
+    width: 100%;
+    .prompt-mark {
+      display: table-cell;
+      width: 16px;
+      vertical-align: top;
+    }
+    textarea {
+      display: table-cell;
+      padding: 4px;
+    }
+  }
+
+  ul.candidates {
+    padding: 4px 8px;
+    li.candidate-item {
+      list-style-type: none;
+      float: left;
+      width: 25%;
+      color: #333;
+      &.candidate-number {
+        color: #600;
+      }
+      &.candidate-string {
+        color: #600;
+      }
+      &.candidate-boolean {
+        color: #006;
+      }
+      &.candidate-function {
+        color: #606;
+      }
+      .candidate-type {
+        color: #aaa;
+        font-size: smaller;
+      }
+    }
+    &:after {
+      clear: both;
+    }
+  }
 }

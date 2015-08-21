@@ -6,7 +6,7 @@ export default class OutputResult extends React.Component {
     const { data, seq } = this.props;
     return (
       <div className='output-result'>
-        <div>{ seq }:</div>
+        <div className='sequence-number'>{ seq }:</div>
         <ObjectInspector data={ data } />
       </div>
     );
