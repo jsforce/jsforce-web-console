@@ -8,7 +8,7 @@ import ContextEvaluator from '../service/ContextEvaluator';
 
 import config from '../config';
 
-console.log(config);
+console.log('Config=', config);
 
 const { jsforce } = global;
 const ctx = { jsforce };
