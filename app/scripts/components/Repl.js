@@ -11,7 +11,7 @@ export default class Repl extends React.Component {
   render() {
     console.log('Repl#render', this.props);
     let { className, histories, loading, prompt, candidates } = this.props;
-    let { requestComplete, requestEvaluate } = this.props;
+    let { requestComplete, requestEvaluate, goBackInHistory, goForwardInHistory } = this.props;
     return (
       <div className={ classnames('repl', className) } >
         { (histories || []).map((history) => {
@@ -25,7 +25,12 @@ export default class Repl extends React.Component {
         {
           loading ?
           <div className="spinner">Loading...</div> :
-          <CommandPrompt data={ prompt } onComplete={ requestComplete } onEvaluate={ requestEvaluate }/>
+          <CommandPrompt data={ prompt }
+            onComplete={ requestComplete }
+            onEvaluate={ requestEvaluate }
+            onBackHistory={ goBackInHistory }
+            onForwardHistory={ goForwardInHistory }
+          />
         }
         {
           candidates && candidates.length > 0 ?

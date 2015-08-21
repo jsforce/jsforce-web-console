@@ -17,12 +17,7 @@ const evaluator = new SforceEvaluator(ctxEvaluator.getContext(), {
 const replActions = createReplActions(evaluator);
 
 function mapStateToProps(state) {
-  return {
-    histories: state.histories,
-    loading: state.loading,
-    prompt: state.prompt,
-    candidates: state.candidates,
-  }
+  return { ...state };
 }
 
 function mapDispatchToProps(dispatch) {

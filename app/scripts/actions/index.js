@@ -13,7 +13,6 @@ export function createReplActions(evaluator) {
 
     init() {
       return (dispatch) => {
-        console.log('#INIT#___');
         const result = evaluator.init();
         if (isPromiseLike(result)) {
           result.then((value) => {
@@ -58,6 +57,45 @@ export function createReplActions(evaluator) {
           dispatch(doAction('OUTPUT_ERROR', err));
         }
       };
-    }
+    },
+
+    goBackInHistory() {
+      return (dispatch, getState) => {
+        let { cursor, histories } = getState();
+        let history, idx;
+        if (cursor < 0) { cursor = histories.length; }
+        for (idx = cursor-1; idx >= 0; idx--) {
+          console.log('history = ', h);
+          let h = histories[idx];
+          if (h.type === 'input') {
+            history = h;
+            break;
+          }
+        }
+        cursor = history ? idx : 0;
+        let prompt = history ? history.data : '';
+        dispatch(doAction('SET_CURSOR', cursor));
+        dispatch(doAction('SET_PROMPT', prompt));
+      };
+    },
+
+    goForwardInHistory() {
+      return (dispatch, getState) => {
+        let { cursor, histories } = getState();
+        let history, idx;
+        for (idx = cursor+1; idx < histories.length; idx++) {
+          let h = histories[idx];
+          if (h.type === 'input') {
+            history = h;
+            break;
+          }
+        }
+        cursor = history ? idx : -1;
+        let prompt = history ? history.data : '';
+        dispatch(doAction('SET_CURSOR', cursor));
+        dispatch(doAction('SET_PROMPT', prompt));
+      };
+    },
+
   };
 }

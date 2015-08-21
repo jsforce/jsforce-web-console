@@ -18,6 +18,9 @@ const histories = handleActions({
     const history = { type: 'log', level: 'error', message: err.message, stack: err.stack };
     return [ ...histories, history ];
   },
+  CLEAR_HISTORIES: () => {
+    return [];
+  },
 }, []);
 
 const loading = handleActions({
@@ -38,6 +41,18 @@ const candidates = handleActions({
   },
 }, []);
 
+const cursor = handleActions({
+  OUTPUT_RESULT: () => {
+    return -1;
+  },
+  SET_CURSOR: (cursor, { payload }) => {
+    return payload;
+  },
+  CLEAR_HISTORIES: () => {
+    return -1;
+  },
+}, -1);
+
 const prompt = handleActions({
   SET_PROMPT: (prompt, action) => {
     return action.payload;
@@ -51,6 +66,7 @@ const rootReducer = combineReducers({
   histories,
   loading,
   prompt,
+  cursor,
   candidates,
 });
 

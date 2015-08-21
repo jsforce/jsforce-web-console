@@ -14,11 +14,15 @@ export default class CommandPrompt extends React.Component {
   }
 
   onKeyUp(e) {
-    const { onEvaluate, onComplete } = this.props;
+    const { onEvaluate, onComplete, onBackHistory, onForwardHistory } = this.props;
     if (e.keyCode === 13 && !e.shiftKey) { // RETURN
       onEvaluate(e.target.value);
     } else if (e.keyCode === 9) { // TAB
       onComplete(e.target.value);
+    } else if (e.keyCode === 38) { // UPPER ARROW
+      onBackHistory();
+    } else if (e.keyCode === 40) {
+      onForwardHistory();
     }
     const rows = (e.target.value || '').split(/\n/).length;
     this.setState({ rows });
