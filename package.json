@@ -1,7 +1,7 @@
 {
   "name": "jsforce-web-console",
   "version": "1.0.0",
-  "description": "",
+  "description": "A Web-based console (REPL) environment for JSforce",
   "main": "index.js",
   "scripts": {
     "server:prod": "bin/server-prod",
@@ -12,7 +12,7 @@
     "build:assets": "cp -r app/vendor public",
     "build": "npm run build:scripts && npm run build:styles && npm run build:assets"
   },
-  "author": "",
+  "author": "Shinichi Tomita <shinichi.tomita@gmail.com>",
   "license": "MIT",
   "devDependencies": {
     "babel": "^5.8.21",
