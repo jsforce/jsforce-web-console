@@ -8,6 +8,8 @@ import ContextEvaluator from '../service/ContextEvaluator';
 
 import config from '../config';
 
+console.log(config);
+
 const { jsforce } = global;
 const ctx = { jsforce };
 const ctxEvaluator = new ContextEvaluator(ctx);
