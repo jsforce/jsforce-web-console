@@ -1,0 +1,34 @@
+#!/usr/bin/env node
+var path = require('path');
+var express = require('express');
+var enchilada = require('enchilada');
+var babelify = require('babelify');
+var envify = require('envify');
+var lessMiddleware = require('less-middleware');
+var jsforceAjaxProxy = require('jsforce-ajax-proxy');
+
+var port = process.env.PORT || 8989;
+
+var server = express();
+server.use('/vendor', express.static(path.join(__dirname, '../app/vendor')));
+server.use('/proxy?*', jsforceAjaxProxy());
+
+server.use(enchilada({
+  src: path.join(__dirname, '../app'),
+  transforms: [
+    babelify.configure({ optional: [ 'runtime', 'es7.objectRestSpread' ] }),
+    envify
+  ],
+  debug: true
+}));
+server.use(lessMiddleware(path.join(__dirname, '../app'), {
+  debug: true,
+  dest: path.join(__dirname, '../.tmp')
+}));
+
+server.use(express.static(path.join(__dirname, '../.tmp')));
+server.use(express.static(path.join(__dirname, '../public')));
+
+server.listen(port, function() {
+  console.log('App server started : http://localhost:' + port);
+});

@@ -1,0 +1,7 @@
+{
+  "name": "jsforce-web-console",
+  "dependencies": {
+    "jsforce": "~1.5.0",
+    "bootstrap": "~3.3.5"
+  }
+}
