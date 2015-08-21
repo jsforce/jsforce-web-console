@@ -4,6 +4,7 @@ import vm from 'vm';
 export default class ContextEvaluator {
   constructor(context, commander) {
     this._context = vm.createContext(context);
+    this._seq = 0;
   }
 
   getContext() {
@@ -15,10 +16,17 @@ export default class ContextEvaluator {
   }
 
   evaluate(text) {
+    this._seq++;
     var script = vm.createScript(text);
     var result = script.runInContext(this._context);
-    this._context._ = result;
-    return { type: 'RESULT', result };
+    if (result && typeof result.then === 'function') {
+      result.then((v) => {
+        this._context._ = this._context['_'+this._seq] = v;
+      });
+    } else {
+      this._context._ = this._context['_'+this._seq] = result;
+    }
+    return { type: 'RESULT', result, seq: this._seq };
   }
 
 

@@ -6,14 +6,13 @@ import { createReplActions } from '../actions/index.js';
 import SforceEvaluator from '../service/SforceEvaluator';
 import ContextEvaluator from '../service/ContextEvaluator';
 
+import config from '../config';
+
 const { jsforce } = global;
 const ctx = { jsforce };
 const ctxEvaluator = new ContextEvaluator(ctx);
-const evaluator = new SforceEvaluator(ctxEvaluator.getContext(), {
-  clientId: process.env.SF_CLIENT_ID,
-  redirectUri: process.env.SF_REDIRECT_URI,
-  proxyUrl: '/proxy/',
-}, ctxEvaluator);
+const evaluator =
+  new SforceEvaluator(ctxEvaluator.getContext(), config.connection, ctxEvaluator);
 const replActions = createReplActions(evaluator);
 
 function mapStateToProps(state) {

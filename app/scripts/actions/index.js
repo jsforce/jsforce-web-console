@@ -16,12 +16,10 @@ export function createReplActions(evaluator) {
         const result = evaluator.init();
         if (isPromiseLike(result)) {
           result.then((value) => {
-            console.log('value', value);
-            dispatch(doAction('OUTPUT_INFO', value));
+            dispatch(doAction('OUTPUT_INFO', { data: value }));
           });
         } else {
-          console.log('result', res);
-          dispatch(doAction('OUTPUT_INFO', result));
+          dispatch(doAction('OUTPUT_INFO', { data: result }));
         }
       }
     },
@@ -36,21 +34,21 @@ export function createReplActions(evaluator) {
       console.log('requestEvaluate', text);
       return (dispatch) => {
         dispatch(doAction('SET_PROMPT', ''));
-        dispatch(doAction('INPUT_COMMAND', text));
+        dispatch(doAction('INPUT_COMMAND', { data: text }));
         dispatch(doAction('LOADING_START'));
         try {
-          const { type, result } = evaluator.evaluate(text);
+          const { type, result, seq } = evaluator.evaluate(text);
           if (isPromiseLike(result)) {
             result.then((value) => {
               dispatch(doAction('LOADING_END'));
-              dispatch(doAction(`OUTPUT_${type}`, value));
+              dispatch(doAction(`OUTPUT_${type}`, { data: value, seq }));
             }, (err) => {
               dispatch(doAction('LOADING_END'));
               dispatch(doAction('OUTPUT_ERROR', err));
             });
           } else {
             dispatch(doAction('LOADING_END'));
-            dispatch(doAction(`OUTPUT_${type}`, result));
+            dispatch(doAction(`OUTPUT_${type}`, { data: result, seq }));
           }
         } catch (err) {
           dispatch(doAction('LOADING_END'));
@@ -83,6 +81,7 @@ export function createReplActions(evaluator) {
       return (dispatch, getState) => {
         let { cursor, histories } = getState();
         let history, idx;
+        if (cursor < 0) { cursor = histories.length; }
         for (idx = cursor+1; idx < histories.length; idx++) {
           let h = histories[idx];
           if (h.type === 'input') {

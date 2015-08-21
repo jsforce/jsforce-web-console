@@ -8,6 +8,12 @@ import CommandPrompt from './CommandPrompt';
 import CompletionCandidates from './CompletionCandidates';
 
 export default class Repl extends React.Component {
+  componentWillReceiveProps() {
+    setTimeout(() => {
+      window.scrollTo(0, document.body.clientHeight);
+    }, 100);
+  }
+
   render() {
     console.log('Repl#render', this.props);
     let { className, histories, loading, prompt, candidates } = this.props;
@@ -16,9 +22,9 @@ export default class Repl extends React.Component {
       <div className={ classnames('repl', className) } >
         { (histories || []).map((history) => {
           return (
-            history.type === 'input' ? <InputCommand data={ history.data } /> :
-            history.type === 'output' ? <OutputResult data={ history.data } /> :
-            history.type === 'log' ? <OutputLog level={ history.level } message={ history.message } /> :
+            history.type === 'input' ? <InputCommand { ...history } /> :
+            history.type === 'output' ? <OutputResult { ...history } /> :
+            history.type === 'log' ? <OutputLog { ...history } /> :
             null
           );
         })}

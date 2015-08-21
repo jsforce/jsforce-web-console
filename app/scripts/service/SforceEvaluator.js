@@ -2,6 +2,7 @@
 const COMMANDS = [
   '.help',
   '.authorize',
+  '.open',
 ];
 
 export default class SforceEvaluator {
@@ -41,9 +42,12 @@ export default class SforceEvaluator {
         this._context.$conn = conn;
         conn.identity().then(({ username }) => {
           resolve('Logged in as: ' + username);
-        }, reject);
+        })
+        .catch((err) => {
+          resolve('Not logged in to Salesforce. Type ".authorize" to connect to your organization.');
+        });
       });
-      setTimeout(() => resolve('Not logged in'), 5000);
+      setTimeout(() => resolve('Not logged in to Salesforce. Type ".authorize" to connect to your organization.'), 5000);
     });
   }
 
@@ -68,6 +72,8 @@ export default class SforceEvaluator {
           return { type: 'INFO', result: this.authorize(args) };
         case '.help':
           return { type: 'INFO', result: this.showHelp(args) };
+        case '.open':
+          return { type: 'INFO', result: this.openUrl(args) };
         default:
           break;
       }
@@ -99,10 +105,24 @@ export default class SforceEvaluator {
     });
   }
 
+  openUrl([ url ]) {
+    const { $conn } = this._context;
+    if (!$conn) {
+      return jsforce.Promise.reject(new Error('Connection is not established yet. Type ".authorize" to connect to your instance'));
+    }
+    let frontdoorUrl = $conn.instanceUrl + '/secur/frontdoor.jsp?sid=' + $conn.accessToken;
+    if (url) {
+      frontdoorUrl += "&retURL=" + encodeURIComponent(url);
+    }
+    window.open(frontdoorUrl);
+    return '';
+  }
+
   showHelp(args) {
     return [
-      ' .help       Show this help',
-      ' .authorize  Login and connect to Salesforce using OAuth2 flow.'
+      '.authorize      Connect to Salesforce using OAuth2 authorization flow',
+      '.help   Show repl options',
+      '.open   Open Salesforce web page using established connection',
     ].join('\n');
   }
 

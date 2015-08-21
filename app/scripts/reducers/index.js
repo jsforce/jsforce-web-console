@@ -2,20 +2,20 @@ import { combineReducers } from 'redux';
 import { handleActions } from 'redux-actions';
 
 const histories = handleActions({
-  INPUT_COMMAND: (histories, action) => {
-    const history = { type: 'input', data: action.payload };
+  INPUT_COMMAND: (histories, { payload }) => {
+    const history = { type: 'input', ...payload };
     return [ ...histories, history ];
   },
-  OUTPUT_RESULT: (histories, action) => {
-    const history = { type: 'output', data: action.payload };
+  OUTPUT_RESULT: (histories, { payload }) => {
+    const history = { type: 'output', ...payload };
     return [ ...histories, history ];
   },
-  OUTPUT_INFO: (histories, action) => {
-    const history = { type: 'log', level: 'info', message: action.payload };
+  OUTPUT_INFO: (histories, { payload: { data: message } }) => {
+    const history = { type: 'log', level: 'info', message };
     return [ ...histories, history ];
   },
-  OUTPUT_ERROR: (histories, { payload: err }) => {
-    const history = { type: 'log', level: 'error', message: err.message, stack: err.stack };
+  OUTPUT_ERROR: (histories, { payload: { message, stack } }) => {
+    const history = { type: 'log', level: 'error', message, stack };
     return [ ...histories, history ];
   },
   CLEAR_HISTORIES: () => {

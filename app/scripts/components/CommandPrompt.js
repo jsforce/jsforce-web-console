@@ -11,6 +11,8 @@ export default class CommandPrompt extends React.Component {
     const ta = React.findDOMNode(this.refs.textarea);
     ta.value = newProps.data;
     ta.focus();
+    const rows = ta.value.split(/\n/).length;
+    this.setState({ rows });
   }
 
   onKeyUp(e) {
@@ -29,7 +31,8 @@ export default class CommandPrompt extends React.Component {
   }
 
   onKeyDown(e) {
-    if (e.keyCode === 9 || (e.keyCode === 13 && !e.shiftKey)) {
+    if (e.keyCode === 9 || (e.keyCode === 13 && !e.shiftKey) ||
+        e.keyCode === 38 || e.keyCode === 40) {
       e.preventDefault();
       e.stopPropagation();
     }
