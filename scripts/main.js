@@ -962,7 +962,6 @@ function getPropertyNames(obj) {
 module.exports = exports['default'];
 
 },{"type-name":209,"vm":17}],14:[function(require,module,exports){
-(function (process){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -970,6 +969,8 @@ Object.defineProperty(exports, '__esModule', {
 });
 
 var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i['return']) _i['return'](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError('Invalid attempt to destructure non-iterable instance'); } }; })();
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
@@ -1117,12 +1118,9 @@ var SforceEvaluator = (function () {
     value: function authorize(args) {
       var _this2 = this;
 
-      jsforce.browser.init({
-        loginUrl: args[0] === 'sandbox' ? 'https://test.salesforce.com' : 'https://login.salesforce.com',
-        clientId: process.env.SF_CLIENT_ID,
-        redirectUri: process.env.SF_REDIRECT_URI,
-        proxyUrl: '/proxy/'
-      });
+      jsforce.browser.init(_extends({
+        loginUrl: args[0] === 'sandbox' ? 'https://test.salesforce.com' : 'https://login.salesforce.com'
+      }, this._config));
       return new jsforce.Promise(function (resolve, reject) {
         jsforce.browser.login({}, function (err, res) {
           if (err) {
@@ -1177,8 +1175,7 @@ var SforceEvaluator = (function () {
 exports['default'] = SforceEvaluator;
 module.exports = exports['default'];
 
-}).call(this,require('_process'))
-},{"_process":16}],15:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
