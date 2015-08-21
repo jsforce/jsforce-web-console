@@ -632,6 +632,8 @@ var _config = require('../config');
 
 var _config2 = _interopRequireDefault(_config);
 
+console.log('Config=', _config2['default']);
+
 var jsforce = global.jsforce;
 
 var ctx = { jsforce: jsforce };
