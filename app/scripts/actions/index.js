@@ -13,12 +13,15 @@ export function createReplActions(evaluator) {
 
     init() {
       return (dispatch) => {
+        dispatch(doAction('LOADING_START'));
         const result = evaluator.init();
         if (isPromiseLike(result)) {
           result.then((value) => {
+            dispatch(doAction('LOADING_END'));
             dispatch(doAction('OUTPUT_INFO', { data: value }));
           });
         } else {
+          dispatch(doAction('LOADING_END'));
           dispatch(doAction('OUTPUT_INFO', { data: result }));
         }
       }

@@ -30,7 +30,7 @@ const loading = handleActions({
   LOADING_END: (loading) => {
     return false;
   },
-}, false);
+}, true);
 
 const candidates = handleActions({
   INPUT_COMMAND: () => {

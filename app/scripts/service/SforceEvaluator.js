@@ -1,7 +1,8 @@
 
 const COMMANDS = [
-  '.help',
   '.authorize',
+  '.disconnect',
+  '.help',
   '.open',
 ];
 
@@ -23,7 +24,6 @@ export default class SforceEvaluator {
           return context.$conn[key](...args);
         };
       } else if (type === 'object') {
-        console.log('key=', key);
         Object.defineProperty(context, key, {
           enumerable: true,
           configurable: false,
@@ -41,16 +41,20 @@ export default class SforceEvaluator {
   init() {
     jsforce.browser.init(this._config);
     return new jsforce.Promise((resolve, reject) => {
-      jsforce.browser.on('connect', (conn) => {
-        this._context.$conn = conn;
-        conn.identity().then(({ username }) => {
-          resolve('Logged in as: ' + username);
-        })
-        .catch((err) => {
-          resolve('Not logged in to Salesforce. Type ".authorize" to connect to your organization.');
+      let handleError = (err) => {
+        resolve('Not logged in to Salesforce. Type ".authorize" to connect to your organization.');
+      };
+      if (jsforce.browser.isLoggedIn()) {
+        jsforce.browser.on('connect', (conn) => {
+          this._context.$conn = conn;
+          conn.identity().then(({ username }) => {
+            resolve('Logged in as: ' + username);
+          })
+          .catch(handleError);
         });
-      });
-      setTimeout(() => resolve('Not logged in to Salesforce. Type ".authorize" to connect to your organization.'), 5000);
+      } else {
+        handleError();
+      }
     });
   }
 
@@ -73,6 +77,8 @@ export default class SforceEvaluator {
       switch (command) {
         case '.authorize':
           return { type: 'INFO', result: this.authorize(args) };
+        case '.disconnect':
+          return { type: 'INFO', result: this.disconnect(args) };
         case '.help':
           return { type: 'INFO', result: this.showHelp(args) };
         case '.open':
@@ -121,11 +127,17 @@ export default class SforceEvaluator {
     return '';
   }
 
+  disconnect() {
+    jsforce.browser.logout();
+    return 'Disconnect connection.';
+  }
+
   showHelp(args) {
     return [
       '.authorize      Connect to Salesforce using OAuth2 authorization flow',
-      '.help   Show repl options',
-      '.open   Open Salesforce web page using established connection',
+      '.help           Show repl options',
+      '.disconnect     Disconnect connection and erase it from registry',
+      '.open           Open Salesforce web page using established connection',
     ].join('\n');
   }
 
