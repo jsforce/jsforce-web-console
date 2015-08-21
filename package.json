@@ -7,7 +7,7 @@
     "server:prod": "bin/server-prod",
     "server:dev": "bin/server-dev",
     "start": "npm run server:prod",
-    "build:scripts": "browserify -t babelify -o public/scripts/main.js app/scripts/main.js",
+    "build:scripts": "browserify -t babelify -t [ envify --NODE_ENV production ] -o public/scripts/main.js app/scripts/main.js",
     "build:styles": "lessc app/styles/main.less > public/styles/main.css",
     "build:assets": "cp -r app/vendor public",
     "build": "npm run build:scripts && npm run build:styles && npm run build:assets"
