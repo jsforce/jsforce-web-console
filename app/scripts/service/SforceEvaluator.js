@@ -95,9 +95,7 @@ export default class SforceEvaluator {
   authorize(args) {
     jsforce.browser.init({
       loginUrl: args[0] === 'sandbox' ? 'https://test.salesforce.com' : 'https://login.salesforce.com',
-      clientId: process.env.SF_CLIENT_ID,
-      redirectUri: process.env.SF_REDIRECT_URI,
-      proxyUrl: '/proxy/',
+      ...this._config
     });
     return new jsforce.Promise((resolve, reject) => {
       jsforce.browser.login({}, (err, res) => {
