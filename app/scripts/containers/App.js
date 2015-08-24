@@ -23,6 +23,12 @@ function mapDispatchToProps(dispatch) {
   ctx.copy = (v) => {
     setTimeout(() => ac.copyText(v), 500);
   };
+  ctx.console = {
+    log: (...args) => {
+      console.log(...args);
+      ac.outputLog(args[0]);
+    }
+  };
   setTimeout(() => ac.init(), 1000);
   return ac;
 }

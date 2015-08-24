@@ -102,10 +102,14 @@ export function createReplActions(evaluator) {
     copyText(text) {
       return doAction('COPY_TEXT', text);
     },
-    
+
     clearCopyBuffer() {
       return doAction('CLEAR_COPY_BUFFER');
     },
+
+    outputLog(v) {
+      return doAction('OUTPUT_RESULT', { data: v });
+    }
 
   };
 }
