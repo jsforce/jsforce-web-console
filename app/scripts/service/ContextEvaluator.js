@@ -15,7 +15,6 @@ export default class ContextEvaluator {
   constructor(context, commander) {
     this._context = vm.createContext(context);
     for (let varName of REGISTERED_GLOBALS) {
-      console.log
       this._context[varName] = global[varName];
     }
     this._seq = 0;

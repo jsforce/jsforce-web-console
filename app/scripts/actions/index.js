@@ -99,5 +99,13 @@ export function createReplActions(evaluator) {
       };
     },
 
+    copyText(text) {
+      return doAction('COPY_TEXT', text);
+    },
+    
+    clearCopyBuffer() {
+      return doAction('CLEAR_COPY_BUFFER');
+    },
+
   };
 }
