@@ -11,7 +11,7 @@ export default {
       redirectUri: 'https://jsforce-web-console.herokuapp.com/callback.html',
       proxyUrl: '/proxy/',
     } : {
-      clientid: process.env.SF_CLIENT_ID,
+      clientId: process.env.SF_CLIENT_ID,
       redirectUri: process.env.SF_REDIRECT_URI,
       proxyUrl: process.env.SF_PROXY_URL,
     }
