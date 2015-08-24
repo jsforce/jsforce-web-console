@@ -1,9 +1,22 @@
 import typeName from 'type-name';
 import vm from 'vm';
 
+const REGISTERED_GLOBALS = (
+  'Array,ArrayBuffer,Boolean,Buffer,DataView,Date,Error,EvalError,' +
+  'Float32Array,Float64Array,Function,Infinity,Int16Array,Int32Array,Int8Array,' +
+  'JSON,Math,NaN,Number,Object,RangeError,ReferenceError,RegExp,String,SyntaxError,' +
+  'TypeError,URIError,Uint16Array,Uint32Array,Uint8Array,Uint8ClampedArray,' +
+  'clearImmediate,clearInterval,clearTimeout,console,decodeURI,decodeURIComponent,' +
+  'encodeURI,encodeURIComponent,escape,eval,isFinite,isNaN,parseFloat,parseInt,' +
+  'setImmediate,setInterval,setTimeout,undefined,unescape'
+).split(/\s*,\s*/);
+
 export default class ContextEvaluator {
   constructor(context, commander) {
     this._context = vm.createContext(context);
+    for (let varName of REGISTERED_GLOBALS) {
+      this._context[varName] = global[varName];
+    }
     this._seq = 0;
   }
 
@@ -74,9 +87,10 @@ export default class ContextEvaluator {
 }
 
 function getPropertyNames(obj) {
-  var names = [];
-  for (let k in obj) {
-    names.push(k);
+  let names = [];
+  for (let o = obj; o; o = o.__proto__) {
+    let props = Object.getOwnPropertyNames(o);
+    names.push(...props);
   }
   return names;
 }

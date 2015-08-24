@@ -62,12 +62,22 @@ const prompt = handleActions({
   }
 }, '');
 
+const copyBuffer = handleActions({
+  COPY_TEXT: (copyBuffer, action) => {
+    return action.payload;
+  },
+  CLEAR_COPY_BUFFER: (copyBuffer) => {
+    return null;
+  }
+}, null);
+
 const rootReducer = combineReducers({
   histories,
   loading,
   prompt,
   cursor,
   candidates,
+  copyBuffer,
 });
 
 export default rootReducer;
