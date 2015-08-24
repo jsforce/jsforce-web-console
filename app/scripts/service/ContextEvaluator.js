@@ -6,7 +6,7 @@ const REGISTERED_GLOBALS = (
   'Float32Array,Float64Array,Function,Infinity,Int16Array,Int32Array,Int8Array,' +
   'JSON,Math,NaN,Number,Object,RangeError,ReferenceError,RegExp,String,SyntaxError,' +
   'TypeError,URIError,Uint16Array,Uint32Array,Uint8Array,Uint8ClampedArray,' +
-  'clearImmediate,clearInterval,clearTimeout,console,decodeURI,decodeURIComponent,' +
+  'clearImmediate,clearInterval,clearTimeout,decodeURI,decodeURIComponent,' +
   'encodeURI,encodeURIComponent,escape,eval,isFinite,isNaN,parseFloat,parseInt,' +
   'setImmediate,setInterval,setTimeout,undefined,unescape'
 ).split(/\s*,\s*/);
@@ -28,10 +28,11 @@ export default class ContextEvaluator {
     return { type: 'INIT', result: '' };
   }
 
-  evaluate(text) {
+  evaluate(code) {
     this._seq++;
-    var script = vm.createScript(text);
-    var result = script.runInContext(this._context);
+    const es5code = require('babel-core').transform(code).code;
+    const script = vm.createScript(es5code);
+    const result = script.runInContext(this._context);
     if (result && typeof result.then === 'function') {
       result.then((v) => {
         this._context._ = this._context['_'+this._seq] = v;
