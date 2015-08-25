@@ -29,7 +29,7 @@ export default class ContextEvaluator {
   }
 
   evaluate(code) {
-    console.log('ContextEvaluator#evaluate()', text, pos);
+    console.log('ContextEvaluator#evaluate()', code);
     this._seq++;
     const es5code = require('babel-core').transform(code, { blacklist: [ "strict" ] }).code;
     console.log('Transpiled ES5 code = ', es5code);
