@@ -18,15 +18,15 @@ export default class Repl extends React.Component {
 
   render() {
     console.log('Repl#render', this.props);
-    let { className, histories, loading, prompt, candidates, copyBuffer } = this.props;
+    let { className, logs, loading, prompt, candidates, copyBuffer } = this.props;
     let { requestComplete, requestEvaluate, goBackInHistory, goForwardInHistory, clearCopyBuffer } = this.props;
     return (
       <div className={ classnames('repl', className) } >
-        { (histories || []).map((history) => {
+        { (logs || []).map((log) => {
           return (
-            history.type === 'input' ? <InputCommand { ...history } /> :
-            history.type === 'output' ? <OutputResult { ...history } /> :
-            history.type === 'log' ? <OutputLog { ...history } /> :
+            log.type === 'input' ? <InputCommand { ...log } /> :
+            log.type === 'output' ? <OutputResult { ...log } /> :
+            log.type === 'log' ? <OutputLog { ...log } /> :
             null
           );
         })}

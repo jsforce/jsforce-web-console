@@ -1,6 +1,7 @@
 
 const COMMANDS = [
   '.authorize',
+  '.clear',
   '.disconnect',
   '.help',
   '.open',
@@ -77,6 +78,8 @@ export default class SforceEvaluator {
       switch (command) {
         case '.authorize':
           return { type: 'INFO', result: this.authorize(args) };
+        case '.clear':
+          return { type: 'CLEAR_LOGS' };
         case '.disconnect':
           return { type: 'INFO', result: this.disconnect(args) };
         case '.help':
@@ -133,6 +136,7 @@ export default class SforceEvaluator {
   showHelp(args) {
     return [
       '.authorize      Connect to Salesforce using OAuth2 authorization flow',
+      '.clear          Clear all output logs',
       '.help           Show repl options',
       '.disconnect     Disconnect connection and erase it from registry',
       '.open           Open Salesforce web page using established connection',

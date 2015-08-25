@@ -68,11 +68,19 @@ const copyBuffer = handleActions({
   },
   CLEAR_COPY_BUFFER: (copyBuffer) => {
     return null;
-  }
+  },
 }, null);
+
+const visibleFrom = handleActions({
+  CLEAR_LOGS: (visibleFrom, { payload }) => {
+    console.log('CLEAR_LOGS', payload);
+    return payload.histories.length;
+  },
+}, 0);
 
 const rootReducer = combineReducers({
   histories,
+  visibleFrom,
   loading,
   prompt,
   cursor,
