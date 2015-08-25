@@ -1061,7 +1061,7 @@ var ContextEvaluator = (function () {
     value: function evaluate(code) {
       var _this = this;
 
-      console.log('ContextEvaluator#evaluate()', text, pos);
+      console.log('ContextEvaluator#evaluate()', code);
       this._seq++;
       var es5code = require('babel-core').transform(code, { blacklist: ["strict"] }).code;
       console.log('Transpiled ES5 code = ', es5code);
