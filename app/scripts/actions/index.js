@@ -9,7 +9,8 @@ function isPromiseLike(o) {
 }
 
 export function createReplActions(evaluator) {
-  return {
+
+  const ac = {
 
     init() {
       return (dispatch) => {
@@ -41,7 +42,10 @@ export function createReplActions(evaluator) {
         dispatch(doAction('LOADING_START'));
         try {
           const { type, result, seq } = evaluator.evaluate(text);
-          if (isPromiseLike(result)) {
+          if (type === 'CLEAR_LOGS') {
+            dispatch(doAction('LOADING_END'));
+            dispatch(ac.clearLogs());
+          } else if (isPromiseLike(result)) {
             result.then((value) => {
               dispatch(doAction('LOADING_END'));
               dispatch(doAction(`OUTPUT_${type}`, { data: value, seq }));
@@ -100,6 +104,11 @@ export function createReplActions(evaluator) {
     },
 
     copyText(text) {
+      if (typeof text !== 'string') {
+        try {
+          text = JSON.stringify(text);
+        } catch(e) {}
+      }
       return doAction('COPY_TEXT', text);
     },
 
@@ -107,9 +116,18 @@ export function createReplActions(evaluator) {
       return doAction('CLEAR_COPY_BUFFER');
     },
 
+    clearLogs() {
+      return (dispatch, getState) => {
+        const state = getState();
+        dispatch(doAction('CLEAR_LOGS', { histories: state.histories }));
+      };
+    },
+
     outputLog(v) {
       return doAction('OUTPUT_RESULT', { data: v });
     }
 
   };
+
+  return ac;
 }
