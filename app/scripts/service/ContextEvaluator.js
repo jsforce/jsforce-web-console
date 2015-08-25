@@ -29,8 +29,10 @@ export default class ContextEvaluator {
   }
 
   evaluate(code) {
+    console.log('ContextEvaluator#evaluate()', text, pos);
     this._seq++;
-    const es5code = require('babel-core').transform(code).code;
+    const es5code = require('babel-core').transform(code, { blacklist: [ "strict" ] }).code;
+    console.log('Transpiled ES5 code = ', es5code);
     const script = vm.createScript(es5code);
     const result = script.runInContext(this._context);
     if (result && typeof result.then === 'function') {
